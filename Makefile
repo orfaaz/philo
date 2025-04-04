@@ -4,8 +4,10 @@ NAME := philo
 SRC := main.c \
 	phi_parser.c \
 	phi_routines01.c \
+	phi_routines02.c \
 	phi_lstfct_01.c \
-	phi_utils.c \
+	phi_utils01.c \
+	phi_utils02.c
 
 LIBDIR = ../libft
 LIB = $(LIBDIR)/libft.a

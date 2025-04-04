@@ -1,4 +1,25 @@
 #include "philosophers.h"
+#include <limits.h>
+
+void	ph_putnbr_fd(long long int nbr, int fd)
+{
+	if (fd < 0)
+		return ;
+	if (nbr == LLONG_MIN)
+		write(1, "-9223372036854775807", 20);
+	else if (nbr < 0)
+	{
+		write(fd, "-", 1);
+		ph_putnbr_fd(-nbr, fd);
+	}
+	else if (nbr > 9)
+	{
+		ph_putnbr_fd(nbr / 10, fd);
+		ft_putchar_fd(nbr % 10 + '0', fd);
+	}
+	else
+		ft_putchar_fd(nbr + '0', fd);
+}
 
 void	invalid_argument(t_data *data, int eval)
 {
@@ -15,15 +36,4 @@ void	free_all(t_data *data, int code)
 	pthread_mutex_destroy(&data->is_dead_mtx);
 	free(data);
 	exit(code);
-}
-
-void	display_time(t_data *data)
-{
-	long long int	time;
-
-	gettimeofday(data->time, NULL);
-	time = data->time->tv_sec * 1000 + data->time->tv_usec / 1000;
-	ft_putstr_fd("|| ", 1);
-	ft_putnbr_fd(time - data->strt_time, 1);
-	ft_putstr_fd(" ||", 1);
 }

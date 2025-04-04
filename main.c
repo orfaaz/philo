@@ -7,8 +7,8 @@ void	create_philos(t_data *data)
 	unsigned int	i;
 
 	i = 0;
-	// gettimeofday(data->time, NULL);
-	// data->strt_time = data->time->tv_sec * 1000 + data->time->tv_usec / 1000;
+	gettimeofday(data->time_s, NULL);
+	data->strt_time = data->time_s->tv_sec * 1000 + data->time_s->tv_usec / 1000;
 	while (++i <= data->n_of_phi)
 		ph_lstadd_back(&data->philo_lst, ph_lstnew(data, i));
 	philo = data->philo_lst;
@@ -37,12 +37,12 @@ t_data	*data_init()
 int	main(int ac, char **av)
 {
 	t_data			*data;
-	// struct timeval	time;//.tv_sec, .tv_usec.
+	struct timeval	time_s;//.tv_sec, .tv_usec.
 
 	if (!(5 <= ac && ac <= 6))
 		invalid_argument(NULL, 1);
 	data = data_init();
-	// data->time = &time;
+	data->time_s = &time_s;
 	parser(data, ac, av);
 	create_philos(data);
 }
