@@ -7,16 +7,14 @@ void	display_time(t_data *data)
 		- data->strt_time;
 	ft_putstr_fd("|| ", 1);
 	ft_putnbr_fd(data->time, 1);
-	ft_putstr_fd(" ||", 1);
+	ft_putstr_fd(" || ", 1);
 }
 
 void	check_hunger(t_data *data, t_philo *philo)
 {
-	pthread_mutex_lock(&data->print_mtx);
+	pthread_mutex_lock(&data->print_mtx);//necessary?
 	gettimeofday(data->time_s, NULL);
-	ph_putnbr_fd(data->time - philo->last_meal, 2);
-	ft_putstr_fd("<------ should die?\n", 2);
-	pthread_mutex_unlock(&data->print_mtx);
+	pthread_mutex_unlock(&data->print_mtx);//necessary?
 	if (data->time - philo->last_meal > data->lifetime)
 		death_routine(data, philo);
 }

@@ -16,7 +16,7 @@ typedef struct	s_philo
 	int				n;
 	pthread_mutex_t	fork_mtx;
 	long long int	last_meal;
-	int				meals;
+	unsigned int	meals;
 	struct s_data	*data;
 	struct s_philo	*next;
 }	t_philo;

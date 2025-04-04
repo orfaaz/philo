@@ -12,10 +12,15 @@ void	create_philos(t_data *data)
 	while (++i <= data->n_of_phi)
 		ph_lstadd_back(&data->philo_lst, ph_lstnew(data, i));
 	philo = data->philo_lst;
-	while (philo)
+	while (i--)
 	{
 		pthread_join(philo->id, NULL);
 		philo = philo->next;
+		// pthread_mutex_lock(&data->print_mtx);
+		// ft_putstr_fd("philo [", 2);
+		// ft_putnbr_fd(philo->n, 2);
+		// ft_putstr_fd("] is joined\n", 2);
+		// pthread_mutex_unlock(&data->print_mtx);
 	}
 }
 
@@ -45,4 +50,5 @@ int	main(int ac, char **av)
 	data->time_s = &time_s;
 	parser(data, ac, av);
 	create_philos(data);
+	free_all(data, 0);
 }

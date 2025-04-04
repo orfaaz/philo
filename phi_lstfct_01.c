@@ -79,6 +79,7 @@ void	ph_lstclear(t_philo *lst, int lstsize)
 
 	if (!lst)
 		return ;
+	lstsize++;
 	while (lstsize--)
 	{
 		tmp = lst;
