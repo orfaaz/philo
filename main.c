@@ -7,24 +7,23 @@ void	create_philos(t_data *data)
 	unsigned int	i;
 
 	i = 0;
-	gettimeofday(data->time_s, NULL);
-	data->strt_time = data->time_s->tv_sec * 1000 + data->time_s->tv_usec / 1000;
+	gettimeofday(data->s_time, NULL);
+	pthread_mutex_lock(&data->wait_start);
 	while (++i <= data->n_of_phi)
 		ph_lstadd_back(&data->philo_lst, ph_lstnew(data, i));
+	data->strt_time = data->s_time->tv_sec * 1000 + data->s_time->tv_usec / 1000;
+	pthread_mutex_unlock(&data->wait_start);
+	usleep(100);
+	pthread_mutex_destroy(&data->wait_start);
 	philo = data->philo_lst;
-	while (i--)
+	while (--i)
 	{
 		pthread_join(philo->id, NULL);
 		philo = philo->next;
-		// pthread_mutex_lock(&data->print_mtx);
-		// ft_putstr_fd("philo [", 2);
-		// ft_putnbr_fd(philo->n, 2);
-		// ft_putstr_fd("] is joined\n", 2);
-		// pthread_mutex_unlock(&data->print_mtx);
 	}
 }
 
-t_data	*data_init()
+t_data	*data_init(struct timeval *s_time)
 {
 	t_data	*data;
 
@@ -32,8 +31,10 @@ t_data	*data_init()
 	if (!data)
 		return (NULL);
 	ft_memset(data, 0, sizeof(t_data));
+	data->s_time = s_time;
 	pthread_mutex_init(&data->print_mtx, NULL);
 	pthread_mutex_init(&data->is_dead_mtx, NULL);
+	pthread_mutex_init(&data->wait_start, NULL);
 	return (data);
 }
 
@@ -42,12 +43,11 @@ t_data	*data_init()
 int	main(int ac, char **av)
 {
 	t_data			*data;
-	struct timeval	time_s;//.tv_sec, .tv_usec.
+	struct timeval	s_time;
 
 	if (!(5 <= ac && ac <= 6))
 		invalid_argument(NULL, 1);
-	data = data_init();
-	data->time_s = &time_s;
+	data = data_init(&s_time);
 	parser(data, ac, av);
 	create_philos(data);
 	free_all(data, 0);
