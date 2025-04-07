@@ -2,7 +2,7 @@
 
 void	death_routine(t_data *data, t_philo *philo)
 {
-	pthread_mutex_lock(&data->print_mtx);
+	// pthread_mutex_lock(&data->print_mtx);
 	pthread_mutex_lock(&data->is_dead_mtx);
 	if (!data->is_dead)
 	{

@@ -85,17 +85,9 @@ void	*start_routine(void *arg)
 	pthread_mutex_unlock(&data->wait_start);
 	while (!check_death(data) && philo->meals <= data->rounds)
 	{
-		if (!check_death(data))
-			eat_routine(data, philo);
-		if (!check_death(data))
-			sleep_routine(data, philo);
-		if (!check_death(data))
-			think_routine(data, philo);
+		eat_routine(data, philo);
+		sleep_routine(data, philo);
+		think_routine(data, philo);
 	}
-	// pthread_mutex_lock(&data->print_mtx);
-	// ft_putstr_fd("philo [", 1);
-	// ft_putnbr_fd(philo->n, 1);
-	// ft_putstr_fd("] ended\n", 1);
-	// pthread_mutex_unlock(&data->print_mtx);
 	return (NULL);
 }

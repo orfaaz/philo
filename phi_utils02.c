@@ -12,9 +12,11 @@ void	display_time(t_data *data)
 
 void	check_hunger(t_data *data, t_philo *philo)
 {
+	pthread_mutex_lock(&data->print_mtx);
 	gettimeofday(data->s_time, NULL);
 	if (data->time - philo->last_meal > data->lifetime)
 		death_routine(data, philo);
+	pthread_mutex_unlock(&data->print_mtx);
 }
 
 //will return 1 if a philo died.
