@@ -10,13 +10,17 @@ void	display_time(t_data *data)
 	ft_putstr_fd(" || ", 1);
 }
 
-void	check_hunger(t_data *data, t_philo *philo)
+//returns 1 if philo died from hunger.
+int	check_hunger(t_data *data, t_philo *philo)
 {
-	pthread_mutex_lock(&data->print_mtx);
 	gettimeofday(data->s_time, NULL);
-	if (data->time - philo->last_meal > data->lifetime)
+	data->time = data->s_time->tv_sec * 1000 + data->s_time->tv_usec / 1000
+		- data->strt_time;
+	if (data->time - philo->last_meal >= data->lifetime)
 		death_routine(data, philo);
-	pthread_mutex_unlock(&data->print_mtx);
+	else
+		return (0);
+	return (1);
 }
 
 //will return 1 if a philo died.

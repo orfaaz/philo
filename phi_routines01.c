@@ -2,8 +2,6 @@
 
 static void	take_fork(t_data *data,t_philo *philo, pthread_mutex_t *fork_mtx)
 {
-	if (check_death(data))
-		return ;
 	pthread_mutex_lock(fork_mtx);
 	pthread_mutex_lock(&data->print_mtx);
 	if (!check_death(data))
@@ -34,16 +32,16 @@ static void	eat_routine(t_data *data, t_philo *philo)
 	if (!check_death(data))
 	{
 		display_time(data);
+		philo->last_meal = data->time;
 		ft_putstr_fd("philo [", 1);
 		ft_putnbr_fd(philo->n, 1);
 		ft_putstr_fd("] is eating\n", 1);
-		philo->last_meal = data->time;
 	}
 	pthread_mutex_unlock(&data->print_mtx);
 	philo->meals++;
 	ft_usleep(data, philo, data->eat_time);
-	pthread_mutex_unlock(&philo->fork_mtx);
 	pthread_mutex_unlock(&philo->next->fork_mtx);
+	pthread_mutex_unlock(&philo->fork_mtx);
 }
 
 void	sleep_routine(t_data *data, t_philo *philo)
@@ -83,11 +81,20 @@ void	*start_routine(void *arg)
 	data = (t_data *)((t_philo *)philo)->data;
 	pthread_mutex_lock(&data->wait_start);
 	pthread_mutex_unlock(&data->wait_start);
-	while (!check_death(data) && philo->meals <= data->rounds)
+	while (!check_death(data) && philo->meals <= data->rounds
+			&& philo->next != philo)
 	{
 		eat_routine(data, philo);
 		sleep_routine(data, philo);
 		think_routine(data, philo);
 	}
+	if (philo->next == philo)
+	{
+		take_fork(data, philo, &philo->fork_mtx);
+		ft_usleep(data, philo, data->lifetime);
+		pthread_mutex_unlock(&philo->fork_mtx);
+	}
+	pthread_mutex_unlock(&philo->next->fork_mtx);
+	pthread_mutex_unlock(&philo->fork_mtx);
 	return (NULL);
 }

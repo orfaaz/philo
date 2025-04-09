@@ -36,21 +36,24 @@ void	free_all(t_data *data, int code)
 	pthread_mutex_destroy(&data->print_mtx);
 	pthread_mutex_unlock(&data->is_dead_mtx);
 	pthread_mutex_destroy(&data->is_dead_mtx);
+	pthread_mutex_unlock(&data->get_time);
+	pthread_mutex_destroy(&data->get_time);
 	free(data);
 	exit(code);
 }
 
 void	ft_usleep(t_data *data, t_philo *philo, long int len)
 {
-	// int	i;
+	long long int	time;//time since last meal in ms
 
-	//seems to slow usleeps more than making 1 big one. 
-	//mul ms of imprecision.
-	// i = 1;
-	len = len * 1000;
-	usleep(len);
-	// while (++i < len)
-	// {
-	check_hunger(data, philo);
-	// }
+	gettimeofday(data->s_time, NULL);
+	time = (data->s_time->tv_sec * 1000 + data->s_time->tv_usec / 1000)
+		- data->strt_time - philo->last_meal;
+	if (time + len > data->lifetime - 2)
+	{
+		usleep((data->lifetime - time) * 1000);
+		death_routine(data, philo);
+	}
+	else
+		usleep(len * 1000);
 }

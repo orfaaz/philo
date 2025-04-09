@@ -29,6 +29,7 @@ typedef struct	s_data
 	long int		sleep_time;
 	unsigned int	rounds;
 	t_philo			*philo_lst;
+	pthread_mutex_t	get_time;
 	struct timeval	*s_time;
 	long long int	time;
 	long long int	strt_time;
@@ -55,7 +56,7 @@ void	free_all(t_data *data, int code);
 void	ph_putnbr_fd(long long int nbr, int fd);
 void	ft_usleep(t_data *data, t_philo *philo, long int len);
 void	display_time(t_data *data);
-void	check_hunger(t_data *data, t_philo *philo);
+int		check_hunger(t_data *data, t_philo *philo);
 int		check_death(t_data *data);
 
 #endif

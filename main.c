@@ -17,9 +17,13 @@ void	create_philos(t_data *data)
 	while (--i)
 	{
 		pthread_join(philo->id, NULL);
+		pthread_mutex_lock(&data->print_mtx);
+		ft_putstr_fd("philo [", 2);
+		ft_putnbr_fd(philo->n, 2);
+		ft_putstr_fd("] joined\n", 2);
+		pthread_mutex_unlock(&data->print_mtx);
 		philo = philo->next;
 	}
-	//slowing down at the end could prevent the IOT error?
 	pthread_mutex_destroy(&data->wait_start);
 }
 
@@ -37,6 +41,9 @@ t_data	*data_init(struct timeval *s_time)
 	if (errnum)
 		free_all(data, errnum);
 	errnum = pthread_mutex_init(&data->is_dead_mtx, NULL);
+	if (errnum)
+		free_all(data, errnum);
+	errnum = pthread_mutex_init(&data->get_time, NULL);
 	if (errnum)
 		free_all(data, errnum);
 	errnum = pthread_mutex_init(&data->wait_start, NULL);
