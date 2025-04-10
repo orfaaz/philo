@@ -94,7 +94,5 @@ void	*start_routine(void *arg)
 		ft_usleep(data, philo, data->lifetime);
 		pthread_mutex_unlock(&philo->fork_mtx);
 	}
-	pthread_mutex_unlock(&philo->next->fork_mtx);
-	pthread_mutex_unlock(&philo->fork_mtx);
 	return (NULL);
 }

@@ -18,9 +18,9 @@ void	create_philos(t_data *data)
 	{
 		pthread_join(philo->id, NULL);
 		pthread_mutex_lock(&data->print_mtx);
-		ft_putstr_fd("philo [", 2);
-		ft_putnbr_fd(philo->n, 2);
-		ft_putstr_fd("] joined\n", 2);
+		// ft_putstr_fd("philo [", 2);
+		// ft_putnbr_fd(philo->n, 2);
+		// ft_putstr_fd("] joined\n", 2);
 		pthread_mutex_unlock(&data->print_mtx);
 		philo = philo->next;
 	}

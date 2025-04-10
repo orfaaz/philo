@@ -1,6 +1,13 @@
 #include "philosophers.h"
 #include <limits.h>
 
+long long int	ft_llabs(long long int n)
+{
+	if (n < 0)
+		return (-n);
+	return (n);
+}
+
 void	ph_putnbr_fd(long long int nbr, int fd)
 {
 	if (fd < 0)
@@ -42,16 +49,17 @@ void	free_all(t_data *data, int code)
 	exit(code);
 }
 
+//cheks if philo will die in sleep. adapts sleep time.
 void	ft_usleep(t_data *data, t_philo *philo, long int len)
 {
-	long long int	time;//time since last meal in ms
+	long long int	time;
 
 	gettimeofday(data->s_time, NULL);
 	time = (data->s_time->tv_sec * 1000 + data->s_time->tv_usec / 1000)
 		- data->strt_time - philo->last_meal;
 	if (time + len > data->lifetime - 2)
 	{
-		usleep((data->lifetime - time) * 1000);
+		usleep(ft_llabs(data->lifetime - time) * 1000);
 		death_routine(data, philo);
 	}
 	else
