@@ -51,12 +51,8 @@ void	free_all(t_data *data, int code)
 	if (!data)
 		exit(1);
 	ph_lstclear(data->philo_lst, ph_lstsize(data->philo_lst));
-	pthread_mutex_unlock(&data->print_mtx);
 	pthread_mutex_destroy(&data->print_mtx);
-	pthread_mutex_unlock(&data->is_dead_mtx);
 	pthread_mutex_destroy(&data->is_dead_mtx);
-	pthread_mutex_unlock(&data->get_time);
-	pthread_mutex_destroy(&data->get_time);
 	free(data);
 	exit(code);
 }

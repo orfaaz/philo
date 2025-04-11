@@ -19,10 +19,11 @@ void	create_philos(t_data *data)
 	unsigned int	i;
 
 	i = 0;
-	gettimeofday(data->s_time, NULL);
 	pthread_mutex_lock(&data->wait_start);
 	while (++i <= data->n_of_phi)
 		ph_lstadd_back(&data->philo_lst, ph_lstnew(data, i));
+	usleep(100);
+	gettimeofday(data->s_time, NULL);
 	data->strt_time = data->s_time->tv_sec * 1000
 		+ data->s_time->tv_usec / 1000;
 	pthread_mutex_unlock(&data->wait_start);
@@ -51,17 +52,12 @@ t_data	*data_init(struct timeval *s_time)
 	errnum = pthread_mutex_init(&data->is_dead_mtx, NULL);
 	if (errnum)
 		free_all(data, errnum);
-	errnum = pthread_mutex_init(&data->get_time, NULL);
-	if (errnum)
-		free_all(data, errnum);
 	errnum = pthread_mutex_init(&data->wait_start, NULL);
 	if (errnum)
 		free_all(data, errnum);
 	return (data);
 }
 
-//av: n_of_philo, time_to_die, time_to_eat, time_to_sleep
-//[number_of_times_each_philosopher_must_eat]
 int	main(int ac, char **av)
 {
 	t_data			*data;

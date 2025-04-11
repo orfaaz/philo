@@ -86,6 +86,7 @@ void	*start_routine(void *arg)
 	t_data	*data;
 	t_philo	*philo;
 
+	usleep(100);
 	philo = (t_philo *)arg;
 	data = (t_data *)((t_philo *)philo)->data;
 	philo->last_meal = 0;

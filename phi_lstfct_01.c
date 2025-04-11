@@ -95,7 +95,6 @@ void	ph_lstclear(t_philo *lst, int lstsize)
 	while (lstsize--)
 	{
 		tmp = lst;
-		pthread_mutex_unlock(&lst->fork_mtx);
 		pthread_mutex_destroy(&lst->fork_mtx);
 		lst = lst->next;
 		free(tmp);
