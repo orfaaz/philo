@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   phi_utils02.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agamay <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/11 12:55:37 by agamay            #+#    #+#             */
+/*   Updated: 2025/04/11 12:55:38 by agamay           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 void	display_time(t_data *data)
@@ -20,5 +32,20 @@ int	check_death(t_data *data)
 		return (1);
 	}
 	pthread_mutex_unlock(&data->is_dead_mtx);
+	return (0);
+}
+
+int	check_hunger(t_data *data, t_philo *philo)
+{
+	long long int	time;
+
+	gettimeofday(data->s_time, NULL);
+	time = data->s_time->tv_sec * 1000 + data->s_time->tv_usec / 1000
+		- data->strt_time;
+	if (time - philo->last_meal > data->lifetime)
+	{
+		death_routine(data, philo);
+		return (1);
+	}
 	return (0);
 }

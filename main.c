@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agamay <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/11 12:54:31 by agamay            #+#    #+#             */
+/*   Updated: 2025/04/11 12:54:33 by agamay           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 //creates n philos, and waits for them.
@@ -11,17 +23,13 @@ void	create_philos(t_data *data)
 	pthread_mutex_lock(&data->wait_start);
 	while (++i <= data->n_of_phi)
 		ph_lstadd_back(&data->philo_lst, ph_lstnew(data, i));
-	data->strt_time = data->s_time->tv_sec * 1000 + data->s_time->tv_usec / 1000;
+	data->strt_time = data->s_time->tv_sec * 1000
+		+ data->s_time->tv_usec / 1000;
 	pthread_mutex_unlock(&data->wait_start);
 	philo = data->philo_lst;
 	while (--i)
 	{
 		pthread_join(philo->id, NULL);
-		pthread_mutex_lock(&data->print_mtx);
-		// ft_putstr_fd("philo [", 2);
-		// ft_putnbr_fd(philo->n, 2);
-		// ft_putstr_fd("] joined\n", 2);
-		pthread_mutex_unlock(&data->print_mtx);
 		philo = philo->next;
 	}
 	pthread_mutex_destroy(&data->wait_start);

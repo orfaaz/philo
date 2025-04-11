@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   phi_lstfct_01.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agamay <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/11 12:54:39 by agamay            #+#    #+#             */
+/*   Updated: 2025/04/11 12:54:42 by agamay           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philosophers.h"
 
 //creates a philo by initializing a thread (the philo) 
@@ -65,12 +77,12 @@ void	ph_lstadd_back(t_philo	**lst, t_philo *new)
 	if (!*lst)
 	{
 		*lst = new;
-		new->next = new;	
+		new->next = new;
 		return ;
 	}
 	last = ph_lstlast(*lst);
 	last->next = new;
-	new->next = *lst;	
+	new->next = *lst;
 }
 
 void	ph_lstclear(t_philo *lst, int lstsize)

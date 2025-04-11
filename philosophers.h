@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: agamay <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/04/11 12:54:18 by agamay            #+#    #+#             */
+/*   Updated: 2025/04/11 12:54:23 by agamay           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
@@ -10,7 +22,7 @@
 
 //philosopher struct. philo is a thread, fork is a mutex.
 //they own their right hand fork.
-typedef struct	s_philo
+typedef struct s_philo
 {
 	pthread_t		id;
 	int				n;
@@ -21,7 +33,7 @@ typedef struct	s_philo
 	struct s_philo	*next;
 }	t_philo;
 
-typedef struct	s_data
+typedef struct s_data
 {
 	unsigned int	n_of_phi;
 	long int		lifetime;
@@ -40,6 +52,7 @@ typedef struct	s_data
 }	t_data;
 
 //routines
+void	think_routine(t_data *data, t_philo *philo);
 void	death_routine(t_data *data, t_philo *philo);
 void	*start_routine(void *philo);
 //parsing
