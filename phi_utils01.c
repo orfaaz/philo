@@ -53,6 +53,7 @@ void	free_all(t_data *data, int code)
 	ph_lstclear(data->philo_lst, ph_lstsize(data->philo_lst));
 	pthread_mutex_destroy(&data->print_mtx);
 	pthread_mutex_destroy(&data->is_dead_mtx);
+	pthread_mutex_destroy(&data->get_time);
 	free(data);
 	exit(code);
 }
@@ -62,9 +63,11 @@ void	ft_usleep(t_data *data, t_philo *philo, long int len)
 {
 	long long int	time;
 
+	pthread_mutex_lock(&data->get_time);
 	gettimeofday(data->s_time, NULL);
 	time = ((data->s_time->tv_sec * 1000 + data->s_time->tv_usec / 1000)
 			- data->strt_time) - philo->last_meal;
+	pthread_mutex_unlock(&data->get_time);
 	if (time + len > data->lifetime - 2)
 	{
 		usleep(ft_llabs(data->lifetime - time) * 1000);

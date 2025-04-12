@@ -22,11 +22,6 @@ t_philo	*ph_lstnew(t_data *data, int n)
 	if (!new)
 		free_all(data, 1);
 	ft_memset(new, 0, sizeof(t_philo));
-	if (pthread_create(&new->id, NULL, &start_routine, new))
-	{
-		ft_putstr_fd("thread creation failed", 2);
-		free_all(data, 1);
-	}
 	if (pthread_mutex_init(&new->fork_mtx, NULL))
 	{
 		ft_putstr_fd("mutex creation failed", 2);

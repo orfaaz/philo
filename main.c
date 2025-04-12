@@ -22,7 +22,13 @@ void	create_philos(t_data *data)
 	pthread_mutex_lock(&data->wait_start);
 	while (++i <= data->n_of_phi)
 		ph_lstadd_back(&data->philo_lst, ph_lstnew(data, i));
-	usleep(100);
+	i = 0;
+	philo = data->philo_lst;
+	while (++i <= data->n_of_phi)
+	{
+		pthread_create(&philo->id, NULL, &start_routine, philo);
+		philo = philo->next;
+	}
 	gettimeofday(data->s_time, NULL);
 	data->strt_time = data->s_time->tv_sec * 1000
 		+ data->s_time->tv_usec / 1000;
@@ -53,6 +59,9 @@ t_data	*data_init(struct timeval *s_time)
 	if (errnum)
 		free_all(data, errnum);
 	errnum = pthread_mutex_init(&data->wait_start, NULL);
+	if (errnum)
+		free_all(data, errnum);
+	errnum = pthread_mutex_init(&data->get_time, NULL);
 	if (errnum)
 		free_all(data, errnum);
 	return (data);
