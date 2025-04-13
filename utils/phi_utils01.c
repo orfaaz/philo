@@ -10,39 +10,31 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
-#include <limits.h>
+#include "../philosophers.h"
 
-long long int	ft_llabs(long long int n)
+void	*ft_memset(void *dest, int c, size_t n)
 {
-	if (n < 0)
-		return (-n);
-	return (n);
+	unsigned char	*temp;
+
+	temp = dest;
+	while (n--)
+		*temp++ = c;
+	return (dest);
 }
 
-void	ph_putnbr_fd(long long int nbr, int fd)
+size_t	ft_strlen(const char *str)
 {
-	if (fd < 0)
-		return ;
-	if (nbr == LLONG_MIN)
-		write(1, "-9223372036854775807", 20);
-	else if (nbr < 0)
-	{
-		write(fd, "-", 1);
-		ph_putnbr_fd(-nbr, fd);
-	}
-	else if (nbr > 9)
-	{
-		ph_putnbr_fd(nbr / 10, fd);
-		ft_putchar_fd(nbr % 10 + '0', fd);
-	}
-	else
-		ft_putchar_fd(nbr + '0', fd);
+	int	i;
+
+	i = 0;
+	while (*str++)
+		i++;
+	return (i);
 }
 
 void	invalid_argument(t_data *data, int eval)
 {
-	ft_putstr_fd("invalid arguments\n", 2);
+	write(1, "invalid arguments\n", 18);
 	free_all(data, eval);
 }
 
@@ -56,23 +48,4 @@ void	free_all(t_data *data, int code)
 	pthread_mutex_destroy(&data->get_time);
 	free(data);
 	exit(code);
-}
-
-//cheks if philo will die in sleep. adapts sleep time.
-void	ft_usleep(t_data *data, t_philo *philo, long int len)
-{
-	long long int	time;
-
-	pthread_mutex_lock(&data->get_time);
-	gettimeofday(data->s_time, NULL);
-	time = ((data->s_time->tv_sec * 1000 + data->s_time->tv_usec / 1000)
-			- data->strt_time) - philo->last_meal;
-	pthread_mutex_unlock(&data->get_time);
-	if (time + len > data->lifetime - 2)
-	{
-		usleep(ft_llabs(data->lifetime - time) * 1000);
-		death_routine(data, philo);
-	}
-	else
-		usleep(len * 1000);
 }

@@ -12,13 +12,49 @@
 
 #include "philosophers.h"
 
+static void	print_death(t_data *data, t_philo *philo, long long int time)
+{
+	pthread_mutex_lock(&data->is_dead_mtx);
+	data->is_dead = 1;
+	ft_putnbr_fd(time, 1);
+	write (1, " ", 1);
+	ft_putnbr_fd(philo->n, 1);
+	write(1, " died\n", 6);
+	pthread_mutex_unlock(&data->is_dead_mtx);
+}
+
+//as soon as a philo starves, set is_dead at one.
+static void	monitor(t_data *data, t_philo *philo)
+{
+	long long int	time;
+	int				dead_philo;
+
+	dead_philo = 0;
+	while (!dead_philo)
+	{
+		pthread_mutex_lock(&data->print_mtx);
+		pthread_mutex_lock(&data->get_time);
+		gettimeofday(data->s_time, NULL);
+		time = data->s_time->tv_sec * 1000 + data->s_time->tv_usec
+			/ 1000 - data->strt_time;
+		if (time - philo->last_meal > data->lifetime)
+		{
+			dead_philo = 1;
+			if (philo->meals < data->rounds)
+				print_death(data, philo, time);
+		}
+		pthread_mutex_unlock(&data->get_time);
+		pthread_mutex_unlock(&data->print_mtx);
+		philo = philo->next;
+		usleep(20);
+	}
+}
+
 //creates n philos, and waits for them.
-void	create_philos(t_data *data)
+static void	create_philos(t_data *data, unsigned int i)
 {
 	t_philo			*philo;
-	unsigned int	i;
 
-	i = 0;
 	pthread_mutex_lock(&data->wait_start);
 	while (++i <= data->n_of_phi)
 		ph_lstadd_back(&data->philo_lst, ph_lstnew(data, i));
@@ -34,6 +70,7 @@ void	create_philos(t_data *data)
 		+ data->s_time->tv_usec / 1000;
 	pthread_mutex_unlock(&data->wait_start);
 	philo = data->philo_lst;
+	monitor(data, philo);
 	while (--i)
 	{
 		pthread_join(philo->id, NULL);
@@ -42,7 +79,7 @@ void	create_philos(t_data *data)
 	pthread_mutex_destroy(&data->wait_start);
 }
 
-t_data	*data_init(struct timeval *s_time)
+static t_data	*data_init(struct timeval *s_time)
 {
 	t_data	*data;
 	int		errnum;
@@ -76,6 +113,6 @@ int	main(int ac, char **av)
 		invalid_argument(NULL, 1);
 	data = data_init(&s_time);
 	parser(data, ac, av);
-	create_philos(data);
+	create_philos(data, 0);
 	free_all(data, 0);
 }

@@ -18,8 +18,8 @@ void	parser(t_data *data, int ac, char **av)
 {
 	data->n_of_phi = ft_atoi(av[1]);
 	data->lifetime = ft_atoi(av[2]);
-	data->eat_time = ft_atoi(av[3]);
-	data->sleep_time = ft_atoi(av[4]);
+	data->eat_time = ft_atoi(av[3]) * 1000;
+	data->sleep_time = ft_atoi(av[4]) * 1000;
 	if (ac == 6)
 		data->rounds = ft_atoi(av[5]);
 	else
@@ -27,7 +27,7 @@ void	parser(t_data *data, int ac, char **av)
 	if (data->n_of_phi < 1 || data->lifetime < 10
 		|| data->eat_time < 10 || data->sleep_time < 10)
 	{
-		ft_putstr_fd("args must be positive int\n", 2);
+		write(1, "args must be positive int\n", 26);
 		free_all(data, 1);
 	}
 }

@@ -1,46 +1,37 @@
-
 NAME := philo
 
 SRC := main.c \
 	phi_parser.c \
 	phi_routines01.c \
 	phi_routines02.c \
-	phi_lstfct_01.c \
-	phi_utils01.c \
-	phi_utils02.c
-
-LIBDIR = ../libft
-LIB = $(LIBDIR)/libft.a
+	utils/phi_lstfct_01.c \
+	utils/phi_utils01.c \
+	utils/phi_utils02.c \
+	utils/phi_utils03.c
 
 OBJDIR = obj
 OBJ = $(SRC:.c=.o)
 OBJ := $(addprefix $(OBJDIR)/, $(OBJ))
 
-CFLAGS = -Wall -Werror -Wextra  -g
-LDFLAGS = -I $(LIBDIR)/ 
+CFLAGS = -Wall -Werror -Wextra -g 
 
 CC = cc
 
-$(NAME): $(LIB) $(OBJ)
-	@$(CC) -o $(NAME) $(OBJ) $(LIB) $(LDFLAGS) -lpthread
+$(NAME): $(OBJ)
+	@$(CC) -o $(NAME) $(OBJ) $(LIB) -lpthread
 
-all: $(LIB) $(OBJ) $(NAME)
+all: $(OBJ) $(NAME)
 
 $(OBJDIR)/%.o: %.c
 	@mkdir -p $(@D)
-	@$(CC) $(CFLAGS) -c -o $@ $^ $(LDFLAGS)
-
-$(LIB):
-	@make -sC $(LIBDIR)
+	@$(CC) $(CFLAGS) -c -o $@ $^
 
 clean:
 	@rm -rf $(OBJDIR)
-	@make -sC $(LIBDIR) clean
 
 fclean: clean
 	@rm -f $(NAME)
-	@make -sC $(LIBDIR) fclean
 
 re: fclean all
 
-.PHONY: all clean fclean re libft
+.PHONY: all clean fclean re

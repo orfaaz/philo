@@ -13,7 +13,6 @@
 #ifndef PHILOSOPHERS_H
 # define PHILOSOPHERS_H
 
-# include <libft.h>
 # include <stdlib.h>
 # include <unistd.h>
 # include <stdio.h>
@@ -53,7 +52,6 @@ typedef struct s_data
 
 //routines
 void	think_routine(t_data *data, t_philo *philo);
-void	death_routine(t_data *data, t_philo *philo);
 void	*start_routine(void *philo);
 //parsing
 void	parser(t_data *data, int ac, char **av);
@@ -64,9 +62,12 @@ t_philo	*ph_lstlast(t_philo *lst);
 void	ph_lstadd_back(t_philo	**lst, t_philo *new);
 void	ph_lstclear(t_philo *lst, int size);
 //utils
+void	ph_putnbr_fd(long long int nbr, int fd);
+void	ft_putnbr_fd(int nbr, int fd);
+int		ft_atoi(const char *nbr);
+void	*ft_memset(void *dest, int c, size_t n);
 void	invalid_argument(t_data *data, int eval);
 void	free_all(t_data *data, int code);
-void	ph_putnbr_fd(long long int nbr, int fd);
 void	ft_usleep(t_data *data, t_philo *philo, long int len);
 void	display_time(t_data *data);
 int		check_hunger(t_data *data, t_philo *philo);

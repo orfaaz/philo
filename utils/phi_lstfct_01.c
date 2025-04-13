@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philosophers.h"
+#include "../philosophers.h"
 
 //creates a philo by initializing a thread (the philo) 
 //and a mutex (the fork).
@@ -24,13 +24,11 @@ t_philo	*ph_lstnew(t_data *data, int n)
 	ft_memset(new, 0, sizeof(t_philo));
 	if (pthread_mutex_init(&new->fork_mtx, NULL))
 	{
-		ft_putstr_fd("mutex creation failed", 2);
+		write(1, "mutex creation failed\n", 22);
 		free_all(data, 1);
 	}
 	new->data = data;
 	new->n = n;
-	new->meals = 0;
-	new->next = NULL;
 	return (new);
 }
 
