@@ -12,13 +12,6 @@
 
 #include "philosophers.h"
 
-// static long long int	ft_llabs(long long int n)
-// {
-// 	if (n < 0)
-// 		return (-n);
-// 	return (n);
-// }
-
 void	think_routine(t_data *data, t_philo *philo)
 {
 	pthread_mutex_lock(&data->print_mtx);
