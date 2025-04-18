@@ -45,7 +45,6 @@ void	free_all(t_data *data, int code)
 	ph_lstclear(data->philo_lst, ph_lstsize(data->philo_lst));
 	pthread_mutex_destroy(&data->print_mtx);
 	pthread_mutex_destroy(&data->is_dead_mtx);
-	pthread_mutex_destroy(&data->get_time);
 	free(data);
 	exit(code);
 }

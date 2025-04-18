@@ -14,13 +14,11 @@
 
 void	display_time(t_data *data)
 {
-	pthread_mutex_lock(&data->get_time);
 	gettimeofday(data->s_time, NULL);
 	data->time = data->s_time->tv_sec * 1000 + data->s_time->tv_usec / 1000
 		- data->strt_time;
 	ft_putnbr_fd(data->time, 1);
 	write(1, " ", 1);
-	pthread_mutex_unlock(&data->get_time);
 }
 
 long long int	ft_llabs(long long int n)

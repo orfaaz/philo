@@ -21,7 +21,7 @@ void	parser(t_data *data, int ac, char **av)
 	data->eat_time = ft_atoi(av[3]) * 1000;
 	data->sleep_time = ft_atoi(av[4]) * 1000;
 	if (ac == 6)
-		data->rounds = ft_atoi(av[5]);
+		data->rounds = ft_atoi(av[5]) - 1;
 	else
 		data->rounds = 4294967295;
 	if (data->n_of_phi < 1 || data->lifetime < 10

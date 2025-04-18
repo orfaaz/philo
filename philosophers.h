@@ -40,7 +40,6 @@ typedef struct s_data
 	long int		sleep_time;
 	unsigned int	rounds;
 	t_philo			*philo_lst;
-	pthread_mutex_t	get_time;
 	struct timeval	*s_time;
 	long long int	time;
 	long long int	strt_time;

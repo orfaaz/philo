@@ -85,7 +85,7 @@ void	*start_routine(void *arg)
 	data = (t_data *)philo->data;
 	pthread_mutex_lock(&data->wait_start);
 	pthread_mutex_unlock(&data->wait_start);
-	if (!philo->n % 2)
+	if (!(philo->n % 2))
 		usleep(100);
 	while (!check_death(data) && philo->meals <= data->rounds
 		&& philo->next != philo)

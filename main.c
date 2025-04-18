@@ -33,7 +33,6 @@ static void	monitor(t_data *data, t_philo *philo)
 	while (!dead_philo)
 	{
 		pthread_mutex_lock(&data->print_mtx);
-		pthread_mutex_lock(&data->get_time);
 		gettimeofday(data->s_time, NULL);
 		time = data->s_time->tv_sec * 1000 + data->s_time->tv_usec
 			/ 1000 - data->strt_time;
@@ -43,7 +42,6 @@ static void	monitor(t_data *data, t_philo *philo)
 			if (philo->meals < data->rounds)
 				print_death(data, philo, time);
 		}
-		pthread_mutex_unlock(&data->get_time);
 		pthread_mutex_unlock(&data->print_mtx);
 		philo = philo->next;
 		usleep(20);
@@ -96,9 +94,6 @@ static t_data	*data_init(struct timeval *s_time)
 	if (errnum)
 		free_all(data, errnum);
 	errnum = pthread_mutex_init(&data->wait_start, NULL);
-	if (errnum)
-		free_all(data, errnum);
-	errnum = pthread_mutex_init(&data->get_time, NULL);
 	if (errnum)
 		free_all(data, errnum);
 	return (data);
